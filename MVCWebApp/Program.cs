@@ -1,27 +1,36 @@
-var builder = WebApplication.CreateBuilder(args);
+    using Microsoft.EntityFrameworkCore;
+    using MVCWebApp.DataBase;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+    var builder = WebApplication.CreateBuilder(args);
+    //configurar tudo aqui 
+    builder.Services.AddControllersWithViews();
+
+//Injetando db contex
+builder.Services.AddDbContext<DbContextH>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("FornecedorPortal"),
+        new MySqlServerVersion(new Version(8, 0, 33))  //versão do seu MySQL SELECT VERSION();
+    ));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
 
-app.UseRouting();
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
 
-app.UseAuthorization();
+    app.UseRouting();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    app.UseAuthorization();
 
-app.Run();
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    app.Run();
