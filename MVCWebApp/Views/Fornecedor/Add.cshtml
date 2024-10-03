@@ -1,35 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@*model MVCWebApp.Models.ViewModelFornecedor*@
+@model MVCWebApp.DTOs.FornecedorDTO
+
+<head>
+    <link href="~/css/Add.css" rel="stylesheet" />
+</head>
 
 <header>
     <h1><strong>Cadastro Cliente</strong></h1>
 </header>
 
-<main class="form">
-    <section class="part1">
-        <div>
-            <label for="nome">Nome:</label>
-            <input type="text" name="name" value="" />
-        </div>
-        <div>
-            <label for="cnpj">CNPJ:</label>
-            <input type="number" name="cnpj" value="" />
-        </div>
-        <div>
-            <label for="segmento">Escolha um Segmento:</label>
-            <select class="segmentos">
-                <option value="">Selecione um segmento</option>
-                <option value="">Comércio</option>
-                <option value="">Serviço</option>
-                <option value="">Indústria</option>
-            </select>
-        </div>
-    </section>
+<form asp-action="Submit" method="post">
+    <main class="form">
+        <section class="part1">
+            <div>
+                <label for="nome">Nome:</label>
+                <input type="text" asp-for="Name" />
 
-    <section class="part2">
+                <label for="cnpj">CNPJ:</label>
+                <input type="text" asp-for="Cnpj" />
+            </div>
+            <div>
+                <label for="segmento">Escolha um Segmento:</label>
+                <select class="segmentos" asp-for="Segmento">
+                    <option value="">Selecione um segmento</option>
+                    <option value="Comércio">Comércio</option>
+                    <option value="Serviço">Serviço</option>
+                    <option value="Indústria">Indústria</option>
+                </select>
 
-    </section>
-</main>
+                <label for="cep">CEP:</label>
+                <input type="number" name="cep" value="" asp-for="Cep" />
+            </div>
+
+            <div>
+                <label for="endereco">Endereço</label>
+                <input type="text" name="endereco" value="" asp-for="Endereco" />
+            </div>
+        </section>
+
+        <section class="part2">
+            <input type="file" asp-for="Image" class="img" />
+        </section>
+    </main>
+
+    <article>
+        <input type="hidden" name="Subscribed" value="true" />
+        <button type="submit">Cadastrar</button>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Message"]
+            </div>
+        }
+    </article>
+</form>

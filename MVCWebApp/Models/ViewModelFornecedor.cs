@@ -1,10 +1,7 @@
-﻿namespace MVCWebApp.Models.Entities
+﻿namespace MVCWebApp.Models
 {
-    public class Fornecedor
+    public class ViewModelFornecedor
     {
-        //Endentificador Unico
-        public Guid Id { get; set; } = Guid.NewGuid();
-
         public string Name { get; set; }
 
         public string Cnpj { get; set; }
@@ -16,6 +13,8 @@
         public string Endereco { get; set; }
 
         public string Image { get; set; }
+
+        public bool Subscribed { get; set; }
 
     }
 }

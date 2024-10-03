@@ -1,36 +1,54 @@
-    using Microsoft.EntityFrameworkCore;
-    using MVCWebApp.DataBase;
+using Microsoft.EntityFrameworkCore;
+using MVCWebApp.DataBase;
 
-    var builder = WebApplication.CreateBuilder(args);
-    //configurar tudo aqui 
-    builder.Services.AddControllersWithViews();
+var builder = WebApplication.CreateBuilder(args);
+// Configurar tudo aqui 
+builder.Services.AddControllersWithViews();
 
-//Injetando db contex
+// Injetando db context
 builder.Services.AddDbContext<DbContextH>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("FornecedorPortal"),
-        new MySqlServerVersion(new Version(8, 0, 33))  //versão do seu MySQL SELECT VERSION();
+        new MySqlServerVersion(new Version(8, 0, 33))  // versão do seu MySQL SELECT VERSION();
     ));
+
+// Configuração do logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 
+// Testar a conexão com o banco de dados
+try
+{
+    await app.Services.GetService<DbContextH>().Database.CanConnectAsync();
+    Console.WriteLine("Conexão com o banco de dados bem-sucedida.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Erro na conexão com o banco de dados: " + ex.Message);
+}
 
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        app.UseHsts();
-    }
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // O valor padrão do HSTS é de 30 dias. Você pode querer mudar isso para cenários de produção, veja https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
-    app.UseHttpsRedirection();
-    app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-    app.UseRouting();
+app.UseRouting();
 
-    app.UseAuthorization();
+app.UseAuthorization();
 
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-    app.Run();
+app.MapControllerRoute(
+    name: "fornecedor",
+    pattern: "{controller=Fornecedor}/{action=Add}/{id?}");
+
+app.Run();
