@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MVCWebApp.DTO;
 
 namespace MVCWebApp.DTOs
 {
@@ -12,13 +13,11 @@ namespace MVCWebApp.DTOs
         public string Cnpj { get; set; }
 
         [Required(ErrorMessage = "O Segmento é obrigatório")]
-        public byte Segmento { get; set; }
+        public Segmento Segmento { get; set; }
 
-        [Required(ErrorMessage = "O CEP é obrigatório")]
-        [StringLength(8, ErrorMessage = "O CEP deve ter 8 caracteres")]
-        public int Cep { get; set; }
+        [RegularExpression(@"^\d{5}-?\d{3}$", ErrorMessage = "O CEP deve estar no formato 00000-000")]
+        public string Cep { get; set; }
         public string Endereco { get; set; }
-        public string Image { get; set; }
-        public bool Subscribed { get; set; } // Propriedade para captura da inscrição
+
     }
 }

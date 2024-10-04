@@ -18,12 +18,14 @@ namespace MVCWebApp.Migrations
                 name: "Fornecedores",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Id = table.Column<string>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cnpj = table.Column<int>(type: "int", nullable: false),
+                    Cnpj = table.Column<string>(type: "char(14)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Segmento = table.Column<byte>(type: "tinyint unsigned", nullable: false),
-                    Cep = table.Column<int>(type: "int", nullable: false),
+                    Cep = table.Column<string>(type: "char(8)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Endereco = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Image = table.Column<string>(type: "longtext", nullable: false)

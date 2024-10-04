@@ -1,4 +1,6 @@
-﻿namespace MVCWebApp.Models.Entities
+﻿using MVCWebApp.DTO;
+
+namespace MVCWebApp.Models.Entities
 {
     public class Fornecedor
     {
@@ -9,13 +11,12 @@
 
         public string Cnpj { get; set; }
 
-        public byte Segmento { get; set; }
+        public Segmento Segmento { get; set; }
 
-        public int Cep { get; set; }
+        public string Cep { get; set; }
 
         public string Endereco { get; set; }
 
         public string Image { get; set; }
-
     }
 }

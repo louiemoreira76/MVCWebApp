@@ -23,37 +23,38 @@ namespace MVCWebApp.Migrations
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("MVCWebApp.Models.Entities.Fornecedor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(36)");
 
-                    b.Property<int>("Cep")
-                        .HasColumnType("int");
+                b.Property<string>("Cep")
+                    .IsRequired()
+                    .HasColumnType("char(8)");
 
-                    b.Property<string>("Cnpj")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Cnpj")
+                    .IsRequired()
+                    .HasColumnType("char(14)");
 
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Endereco")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Image")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("longtext");
 
-                    b.Property<byte>("Segmento")
-                        .HasColumnType("tinyint unsigned");
+                b.Property<byte>("Segmento")
+                    .HasColumnType("tinyint unsigned");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Fornecedores");
-                });
+                b.ToTable("Fornecedores");
+            });
 #pragma warning restore 612, 618
         }
     }

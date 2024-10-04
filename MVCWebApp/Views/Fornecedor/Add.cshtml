@@ -1,4 +1,5 @@
 ﻿@*model MVCWebApp.Models.ViewModelFornecedor*@
+@using MVCWebApp.DTO 
 @model MVCWebApp.DTOs.FornecedorDTO
 
 <head>
@@ -9,27 +10,25 @@
     <h1><strong>Cadastro Cliente</strong></h1>
 </header>
 
-<form asp-action="Submit" method="post">
+<form asp-action="Submit" method="post" enctype="multipart/form-data">
     <main class="form">
         <section class="part1">
             <div>
                 <label for="nome">Nome:</label>
-                <input type="text" asp-for="Name" />
+                <input type="text" required asp-for="Name" />
 
                 <label for="cnpj">CNPJ:</label>
-                <input type="text" asp-for="Cnpj" />
+                <input type="text" required asp-for="Cnpj" />
             </div>
             <div>
                 <label for="segmento">Escolha um Segmento:</label>
-                <select class="segmentos" asp-for="Segmento">
-                    <option value="">Selecione um segmento</option>
-                    <option value="Comércio">Comércio</option>
-                    <option value="Serviço">Serviço</option>
-                    <option value="Indústria">Indústria</option>
+                <select class="segmentos" asp-for="Segmento" asp-items="Html.GetEnumSelectList<Segmento>()">
+                    <option required>Selecione um segmento</option>
                 </select>
 
+
                 <label for="cep">CEP:</label>
-                <input type="number" name="cep" value="" asp-for="Cep" />
+                <input type="text" name="cep" required asp-for="Cep" />
             </div>
 
             <div>
@@ -39,7 +38,7 @@
         </section>
 
         <section class="part2">
-            <input type="file" asp-for="Image" class="img" />
+            <input type="file" accept="image/*" class="img" name="file" />
         </section>
     </main>
 

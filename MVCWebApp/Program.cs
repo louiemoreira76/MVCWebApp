@@ -1,17 +1,22 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using MVCWebApp.DataBase;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configurar tudo aqui 
-builder.Services.AddControllersWithViews();
 
 // Injetando db context
 builder.Services.AddDbContext<DbContextH>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("FornecedorPortal"),
-        new MySqlServerVersion(new Version(8, 0, 33))  // versão do seu MySQL SELECT VERSION();
-    ));
+        new MySqlServerVersion(new Version(8, 0, 33))));
 
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 104857600; // 100 MB
+});
+
+builder.Services.AddControllersWithViews();
 // Configuração do logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -19,14 +24,18 @@ builder.Logging.AddConsole();
 var app = builder.Build();
 
 // Testar a conexão com o banco de dados
-try
+using (var scope = app.Services.CreateScope())
 {
-    await app.Services.GetService<DbContextH>().Database.CanConnectAsync();
-    Console.WriteLine("Conexão com o banco de dados bem-sucedida.");
-}
-catch (Exception ex)
-{
-    Console.WriteLine("Erro na conexão com o banco de dados: " + ex.Message);
+    var dbContext = scope.ServiceProvider.GetRequiredService<DbContextH>();
+    try
+    {
+        await dbContext.Database.CanConnectAsync();
+        Console.WriteLine("Conexão com o banco de dados bem-sucedida.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Erro na conexão com o banco de dados: " + ex.Message);
+    }
 }
 
 if (!app.Environment.IsDevelopment())
