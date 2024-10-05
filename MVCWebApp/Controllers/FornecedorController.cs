@@ -28,75 +28,88 @@ namespace MVCWebApp.Web.Controllers
             return View();
         }
 
-          [HttpPost]
-    public async Task<IActionResult> Submit(FornecedorDTO fornecedorDto, IFormFile file)
-    {
-       logger.LogInformation("Método Submit chamado");
+        [HttpPost]
+        public async Task<IActionResult> Submit(FornecedorDTO fornecedorDto, IFormFile file)
+        {
+            logger.LogInformation("Método Submit chamado");
 
-try
-{
-    logger.LogInformation("Entrando no bloco try");
+            try
+            {
+                logger.LogInformation("Entrando no bloco try");
 
-    if (file == null || file.Length == 0)
-    {
-        logger.LogWarning("Arquivo não enviado ou vazio.");
-        ModelState.AddModelError("file", "O campo de imagem é obrigatório.");
-        return View("Add", fornecedorDto);
-    }
+                if (file == null || file.Length == 0)
+                {
+                    logger.LogWarning("Arquivo não enviado ou vazio.");
+                    ModelState.AddModelError("file", "O campo de imagem é obrigatório.");
+                    return View("Add", fornecedorDto);
+                }
 
-    logger.LogInformation("Arquivo verificado");
+                logger.LogInformation("Arquivo verificado");
 
-    if (!file.ContentType.StartsWith("image/"))
-    {
-        logger.LogWarning("Arquivo não é uma imagem.");
-        ModelState.AddModelError("file", "O arquivo deve ser uma imagem.");
-        return View("Add", fornecedorDto);
-    }
+                if (!file.ContentType.StartsWith("image/"))
+                {
+                    logger.LogWarning("Arquivo não é uma imagem.");
+                    ModelState.AddModelError("file", "O arquivo deve ser uma imagem.");
+                    return View("Add", fornecedorDto);
+                }
 
-    logger.LogInformation("Tipo de arquivo verificado");
+                logger.LogInformation("Tipo de arquivo verificado");
 
-    if (!ModelState.IsValid)
-    {
-        var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-        logger.LogWarning("Erros do ModelState: " + string.Join(", ", errors));
-        return View("Add", fornecedorDto);
-    }
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                    logger.LogWarning("Erros do ModelState: " + string.Join(", ", errors));
+                    return View("Add", fornecedorDto);
+                }
 
-    logger.LogInformation("ModelState verificado");
+                logger.LogInformation("ModelState verificado");
 
-    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", file.FileName);
-    logger.LogInformation($"Caminho do arquivo: {filePath}");
+                string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "Images", file.FileName);
+                logger.LogInformation($"Caminho do arquivo: {filePath}");
 
-    using (var stream = new FileStream(filePath, FileMode.Create))
-    {
-        await file.CopyToAsync(stream);
-    }
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
 
-    logger.LogInformation("Arquivo copiado");
+                logger.LogInformation("Arquivo copiado");
 
-    var fornecedor = new Fornecedor
-    {
-        Name = fornecedorDto.Name,
-        Cnpj = fornecedorDto.Cnpj,
-        Segmento = fornecedorDto.Segmento,
-        Cep = fornecedorDto.Cep,
-        Endereco = fornecedorDto.Endereco,
-        Image = filePath,
-    };
+                // Criação do objeto Fornecedor
+                var fornecedor = new Fornecedor
+                {
+                    Id = Guid.NewGuid(),
+                    Name = fornecedorDto.Name,
+                    Cnpj = fornecedorDto.Cnpj,
+                    Segmento = fornecedorDto.Segmento,
+                    Cep = fornecedorDto.Cep,
+                    Endereco = fornecedorDto.Endereco,
+                    Image = filePath,
+                };
 
-    logger.LogInformation("Fornecedor criado");
+                logger.LogInformation("Fornecedor criado\n");
+                logger.LogInformation($"Fornecedor: {fornecedor.Name}, Cnpj: {fornecedor.Cnpj}, Segmento: {fornecedor.Segmento}, Cep: {fornecedor.Cep}, Endereco: {fornecedor.Endereco}, Image: {fornecedor.Image}");
 
-    await dbContext.Fornecedores.AddAsync(fornecedor);
-    await dbContext.SaveChangesAsync();
-    logger.LogInformation("Fornecedor adicionado ao banco de dados");
+                // Garante que o fornecedor está sendo rastreado pelo DbContext
+                dbContext.Fornecedores.Attach(fornecedor);
 
-    return RedirectToAction("Add", "Fornecedor");
-}
-catch (Exception ex)
-{
-    logger.LogError("Erro ao adicionar fornecedor: " + ex.Message);
-    return RedirectToAction("Add", "Fornecedor");
-}
-    }
+                var result = await dbContext.SaveChangesAsync();
+                logger.LogInformation($"Registros afetados: {result}");
+
+                // Adiciona o fornecedor ao contexto e salva
+                await dbContext.Fornecedores.AddAsync(fornecedor);
+                await dbContext.SaveChangesAsync();
+                logger.LogInformation("Fornecedor adicionado ao banco de dados");
+                logger.LogInformation($"Registros afetados: {result}");
+
+                return RedirectToAction("Add", "Fornecedor");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Erro ao adicionar fornecedor: " + ex.Message);
+                return RedirectToAction("Add", "Fornecedor");
+            }
+        }
+
+
     }
 }

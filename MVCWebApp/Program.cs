@@ -5,11 +5,13 @@ using MVCWebApp.DataBase;
 var builder = WebApplication.CreateBuilder(args);
 // Configurar tudo aqui 
 
-// Injetando db context
+// Configurar a injeção do DbContextH com MySQL
 builder.Services.AddDbContext<DbContextH>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("FornecedorPortal"),
-        new MySqlServerVersion(new Version(8, 0, 33))));
+        new MySqlServerVersion(new Version(8, 0, 33)))
+    .EnableSensitiveDataLogging(false) // Para ver dados sensíveis nos logs (use apenas em ambiente de desenvolvimento)
+    .LogTo(Console.WriteLine, LogLevel.Information)); // Log para o console
 
 builder.Services.Configure<FormOptions>(options =>
 {

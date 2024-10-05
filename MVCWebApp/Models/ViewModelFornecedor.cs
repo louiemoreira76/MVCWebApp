@@ -6,9 +6,9 @@
 
         public string Cnpj { get; set; }
 
-        public byte Segmento { get; set; }
+        public string Segmento { get; set; }
 
-        public int Cep { get; set; }
+        public string Cep { get; set; }
 
         public string Endereco { get; set; }
 
