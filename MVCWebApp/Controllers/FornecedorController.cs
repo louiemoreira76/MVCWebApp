@@ -7,10 +7,12 @@ using MVCWebApp.DTOs;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using MVCWebApp.DTO;
 
 namespace MVCWebApp.Web.Controllers
 {
-    public class FornecedorController : Controller
+    public class FornecedorController : Controller  
     {
         private readonly DbContextH dbContext;
         private readonly ILogger<FornecedorController> logger;
@@ -45,7 +47,7 @@ namespace MVCWebApp.Web.Controllers
                 }
 
                 logger.LogInformation("Arquivo verificado");
-
+                   
                 if (!file.ContentType.StartsWith("image/"))
                 {
                     logger.LogWarning("Arquivo não é uma imagem.");
@@ -55,12 +57,12 @@ namespace MVCWebApp.Web.Controllers
 
                 logger.LogInformation("Tipo de arquivo verificado");
 
-                if (!ModelState.IsValid)
-                {
-                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                    logger.LogWarning("Erros do ModelState: " + string.Join(", ", errors));
-                    return View("Add", fornecedorDto);
-                }
+                // if (!ModelState.IsValid)
+                //{
+                //    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                //    logger.LogWarning("Erros do ModelState: " + string.Join(", ", errors));
+               //     return View("Add", fornecedorDto); // Retorna à view com os dados preenchidos
+               // }
 
                 logger.LogInformation("ModelState verificado");
 
@@ -109,6 +111,26 @@ namespace MVCWebApp.Web.Controllers
                 return RedirectToAction("Add", "Fornecedor");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var fornecedores = await dbContext.Fornecedores.ToListAsync();
+
+            // Converta a lista de Fornecedor para FornecedorDTO
+            var fornecedoresDTO = fornecedores.Select(f => new FornecedorDTO
+            {
+                Cep = f.Cep,
+                Cnpj = f.Cnpj,
+                Endereco = f.Endereco,
+                Name = f.Name,
+                Segmento = f.Segmento, // Ou a conversão correta, dependendo de como você armazenou o Segmento
+                ImageUrl = f.Image
+            }).ToList();
+
+            return View(fornecedoresDTO);
+        }
+
 
 
     }

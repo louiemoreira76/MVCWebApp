@@ -1,0 +1,41 @@
+﻿@model List<MVCWebApp.DTOs.FornecedorDTO>
+
+<head>
+    <link href="~/css/List.css" rel="stylesheet" />
+</head>
+
+<h1>Fornecedores</h1>
+<hr />
+<section>
+    
+    @foreach (var register in Model)
+    {
+        <div class="fornecedor-container">
+            <div class="info">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Segmento: @register.Segmento</td>
+                            <td>Nome: @register.Name</td>
+                        </tr>
+                        <tr>
+                            <td>CNPJ: @register.Cnpj</td>
+                            <td>CEP: @register.Cep</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Endereço: @register.Endereco</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="img">
+                @if (!string.IsNullOrEmpty(register.ImageUrl))
+                {
+                    var imageName = register.ImageUrl.Substring(register.ImageUrl.LastIndexOf('\\') + 1);
+                    <img src="@Url.Content($"~/Images/{imageName}")" id="img" alt="Imagem do fornecedor" />
+                }
+            </div>
+            <hr/>
+        </div>
+    }
+</section>

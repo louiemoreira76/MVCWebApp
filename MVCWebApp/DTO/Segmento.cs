@@ -3,7 +3,7 @@
     public enum Segmento
     {
         Comercio,
-        Servico,
+        Serviço,
         Industria
     }
 }

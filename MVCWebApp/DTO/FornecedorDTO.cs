@@ -19,5 +19,7 @@ namespace MVCWebApp.DTOs
         public string Cep { get; set; }
         public string Endereco { get; set; }
 
+        public string ImageUrl { get; set; }
+
     }
 }

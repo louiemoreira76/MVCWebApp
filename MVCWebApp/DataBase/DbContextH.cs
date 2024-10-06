@@ -14,6 +14,15 @@ namespace MVCWebApp.DataBase
         }
         //coleção de BB de tipo especifico
         public DbSet<Fornecedor> Fornecedores { get; set; }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); // Chama o método base
+
+            modelBuilder.Entity<Fornecedor>()
+                .Property(f => f.Segmento)
+                .HasConversion<string>();
+        }
+
     }
 }

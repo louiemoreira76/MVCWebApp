@@ -4,6 +4,8 @@
 
 <head>
     <link href="~/css/Add.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
 </head>
 
 <header>
@@ -26,26 +28,30 @@
                     <option required>Selecione um segmento</option>
                 </select>
 
-
+                <span id="msg"></span>
                 <label for="cep">CEP:</label>
-                <input type="text" name="cep" required asp-for="Cep" />
+                <input type="text" name="cep" required asp-for="Cep" id="cep"/>
             </div>
 
             <div>
                 <label for="endereco">Endereço</label>
-                <input type="text" name="endereco" value="" asp-for="Endereco" />
+                <input type="text" name="endereco" id="endereco" asp-for="Endereco" />
             </div>
         </section>
 
         <section class="part2">
-            <input type="file" accept="image/*" class="img" name="file" />
+            <input type="file" accept="image/*" class="input" name="file" onchange="previewImage(event)" />
+            <div class="img-renderizada"> 
+                <img id="renderizar" />
+            </div>
         </section>
     </main>
 
     <article>
         <input type="hidden" name="Subscribed" value="true" />
         <button type="submit">Cadastrar</button>
-
+    
+        <span></span>
         @if (TempData["Message"] != null)
         {
             <div class="alert alert-success">
@@ -54,3 +60,5 @@
         }
     </article>
 </form>
+<script src="/js/Cep.js"></script>
+<script src="/js/Image.js"></script>

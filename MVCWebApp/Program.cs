@@ -32,7 +32,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         await dbContext.Database.CanConnectAsync();
-        Console.WriteLine("Conexão com o banco de dados bem-sucedida.");
+        Console.WriteLine("Conexão com o banco de dados bem-sucedida^^.");
     }
     catch (Exception ex)
     {
