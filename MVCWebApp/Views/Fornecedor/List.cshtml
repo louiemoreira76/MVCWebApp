@@ -7,7 +7,6 @@
 <h1>Fornecedores</h1>
 <hr />
 <section>
-    
     @foreach (var register in Model)
     {
         <div class="fornecedor-container">
@@ -35,7 +34,30 @@
                     <img src="@Url.Content($"~/Images/{imageName}")" id="img" alt="Imagem do fornecedor" />
                 }
             </div>
-            <hr/>
+
+            <div class="options">
+                <table>
+                    <tr>
+                        <td>
+                            <a asp-controller="Fornecedor" asp-action="Edit" asp-route-id="@register.Id">
+                                <img src="~/Images/ferramenta-lapis 1.svg" alt="Editar" />
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @using (Html.BeginForm("Delete", "Fornecedor", FormMethod.Post))
+                            {
+                                @Html.Hidden("id", register.Id) <!-- Passando o ID para o método Delete -->
+                                <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este fornecedor?');">
+                                    <img src="~/Images/lixeira 1.svg" alt="Excluir" />
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr />
         </div>
     }
 </section>

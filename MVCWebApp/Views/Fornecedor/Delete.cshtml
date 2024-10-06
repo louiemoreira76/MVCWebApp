@@ -1,0 +1,15 @@
+﻿@model MVCWebApp.Models.Entities.Fornecedor
+
+@{
+    ViewData["Title"] = "Deletar Fornecedor";
+}
+
+<h1>Deletar Fornecedor</h1>
+<hr />
+<p>Você tem certeza que deseja deletar o fornecedor @Model.Name?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Confirmar Deleção</button>
+    <a asp-action="List">Cancelar</a>
+</form>

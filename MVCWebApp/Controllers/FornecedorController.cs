@@ -120,6 +120,7 @@ namespace MVCWebApp.Web.Controllers
             // Converta a lista de Fornecedor para FornecedorDTO
             var fornecedoresDTO = fornecedores.Select(f => new FornecedorDTO
             {
+                Id = f.Id,
                 Cep = f.Cep,
                 Cnpj = f.Cnpj,
                 Endereco = f.Endereco,
@@ -130,6 +131,103 @@ namespace MVCWebApp.Web.Controllers
 
             return View(fornecedoresDTO);
         }
+
+
+        [HttpPost]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    logger.LogError("ID do fornecedor inválido.");
+                    logger.LogError($"ID:{id}");
+                    return RedirectToAction("List");
+                }
+
+                var fornecedor = await dbContext.Fornecedores.FindAsync(id);
+
+                if (fornecedor is null)
+                {
+                    logger.LogWarning($"Fornecedor com ID {id} não encontrado.");
+                    return RedirectToAction("List");
+                }
+
+                dbContext.Fornecedores.Remove(fornecedor);
+                await dbContext.SaveChangesAsync();
+
+                logger.LogInformation($"Fornecedor removido com sucesso. ID: {fornecedor.Id}");
+
+                return RedirectToAction("List");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Erro ao excluir fornecedor: {ex.Message}");
+                return RedirectToAction("List");
+            }
+        }
+
+        [HttpGet("fornecedor/edit/{id}")]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var fornecedor = await dbContext.Fornecedores.FindAsync(id);
+            if (fornecedor == null)
+            {
+                logger.LogError($"Fornecedor não encontrado com ID {id}");
+                return NotFound();
+            }
+
+            var fornecedorDto = new FornecedorDTO
+            {
+                Id = fornecedor.Id,
+                Name = fornecedor.Name,
+                Cnpj = fornecedor.Cnpj,
+                Segmento = fornecedor.Segmento,
+                Cep = fornecedor.Cep,
+                Endereco = fornecedor.Endereco,
+                ImageUrl = fornecedor.Image
+            };
+
+            return View(fornecedorDto);
+        }
+
+        [HttpPost("fornecedor/edit/{id}")]
+        public async Task<IActionResult> Edit(Guid id, FornecedorDTO fornecedorDto, IFormFile file)
+        {
+            var fornecedor = await dbContext.Fornecedores.FindAsync(id);
+            if (fornecedor == null)
+            {
+                logger.LogError($"Fornecedor não encontrado com ID {id}");
+                return NotFound();
+            }
+
+            // Atualize os campos do fornecedor
+            fornecedor.Name = fornecedorDto.Name;
+            fornecedor.Cnpj = fornecedorDto.Cnpj;
+            fornecedor.Segmento = fornecedorDto.Segmento;
+            fornecedor.Cep = fornecedorDto.Cep;
+            fornecedor.Endereco = fornecedorDto.Endereco;
+
+            // Lógica para atualização de imagem
+            if (file != null && file.Length > 0)
+            {
+                var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
+                var filePath = Path.Combine(uploads, file.FileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                fornecedor.Image = Path.Combine("Images", file.FileName); // Atualize a propriedade da imagem
+            }
+
+            await dbContext.SaveChangesAsync();
+            logger.LogInformation($"Fornecedor editado com sucesso com ID {id}");
+            return RedirectToAction("List");
+        }
+
 
 
 

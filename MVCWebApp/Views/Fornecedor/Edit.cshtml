@@ -1,0 +1,76 @@
+﻿@using MVCWebApp.Models
+@model MVCWebApp.DTOs.FornecedorDTO
+@using MVCWebApp.DTO 
+
+
+<head>
+    <link href="~/css/Add.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+@if (Model is null)
+{
+    <p>Nenhum Fornecedor com esse ID</p>
+}
+else
+{
+    <header>
+        <h1><strong>Alterar Informações de Fornecedor</strong></h1>
+        <input type="text" asp-for="Id" readonly />
+    </header>
+
+    <form asp-controller="Fornecedor" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <main class="form">
+            <section class="part1">
+                <div>
+                    <label for="nome">Nome:</label>
+                    <input type="text" required asp-for="Name" />
+
+                    <label for="cnpj">CNPJ:</label>
+                    <input type="text" required asp-for="Cnpj" />
+                </div>
+                <div>
+                    <label for="segmento">Escolha um Segmento:</label>
+                    <select class="segmentos" asp-for="Segmento" asp-items="Html.GetEnumSelectList<Segmento>()">
+                        <option value="">Selecione um segmento</option>
+                    </select>
+
+                    <span id="msg"></span>
+                    <label for="cep">CEP:</label>
+                    <input type="text" name="cep" required asp-for="Cep" id="cep" />
+                </div>
+
+                <div>
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" asp-for="Endereco" />
+                </div>
+            </section>
+
+            <section class="part2">
+                <input type="file" accept="image/*" class="input" name="file" onchange="previewImage(event)" />
+                <div class="img-renderizada">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img id="renderizar" src="@Url.Content($"~/Images/{Model.ImageUrl}")" alt="Imagem do fornecedor" />
+                    }
+                </div>
+            </section>
+
+        </main>
+
+        <article>
+            <input type="hidden" asp-for="Id" />
+            <button type="submit">Atualizar</button>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Message"]
+                </div>
+            }
+        </article>
+    </form>
+    <script src="/js/Cep.js"></script>
+    <script src="/js/Image.js"></script>
+}
+

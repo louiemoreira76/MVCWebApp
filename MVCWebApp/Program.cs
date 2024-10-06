@@ -62,4 +62,9 @@ app.MapControllerRoute(
     name: "fornecedor",
     pattern: "{controller=Fornecedor}/{action=Add}/{id?}");
 
+app.MapControllerRoute(
+    name: "fornecedor-edit",
+    pattern: "{controller=Fornecedor}/{action=Edit}/{id?}",
+    defaults: new { action = "Edit" });
+
 app.Run();

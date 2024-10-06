@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Fornecedor\Delete.cshtml" />
     <Content Remove="wwwroot\css\List.cs" />
     <Content Remove="wwwroot\js\image.cs" />
   </ItemGroup>
