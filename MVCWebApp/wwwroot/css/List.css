@@ -1,62 +1,98 @@
-﻿h1 {
-    color: #4CAF50;
-    text-align: center;
-    font-size: 24px;
+﻿/* Estilos gerais */
+body {
+    background: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    font-family: 'Arial', sans-serif;
 }
 
+h1 {
+    color: #4CAF50;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Linha separadora */
 hr {
     height: 3px;
     background-color: black;
     border: none;
+    margin: 20px 0;
 }
 
+/* Estrutura de seções */
 section {
     display: flex;
     flex-direction: column;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
 }
 
-.titulo {
+/* Títulos */
+.titulo, .tituloI {
     width: 50%;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.tituloI {
-    width: 50%;
-}
-
-
-
+/* Estilização da tabela */
 table {
     border-collapse: collapse;
     width: 100%;
-    height: 100%
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Adiciona espaço entre a tabela e outros elementos */
 }
 
 th, td {
-    border: 2px solid black;
-    padding: 10px;
+    border: 2px solid #ccc;
+    padding: 15px;
+    text-align: left;
 }
 
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: #333;
+}
 
+/* Efeito hover para tabela */
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Container dos fornecedores */
 .fornecedor-container {
     display: flex;
     flex-direction: row;
     margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Informações dos fornecedores */
 .info {
-    width: 50%;
-    height: 200px
+    width: 60%;
+    height: 200px;
+    word-wrap: break-word; /* Quebra o texto longo */
+    padding-right: 10px; /* Adiciona espaçamento entre o texto e a imagem */
 }
 
+/* Seção de imagem */
 .img {
-    width: 50%;
+    width: 40%;
     height: 200px;
-    border: 2px solid black;
+    border: 2px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-left: 20px; /* Adiciona espaço entre a imagem e a tabela */
 }
 
 #img {

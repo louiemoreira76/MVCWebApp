@@ -46,10 +46,10 @@
                     </tr>
                     <tr>
                         <td>
-                            @using (Html.BeginForm("Delete", "Fornecedor", FormMethod.Post))
+                            @using (Html.BeginForm("Delete", "Fornecedor", new { id = register.Id }, FormMethod.Post))
                             {
                                 @Html.Hidden("id", register.Id) <!-- Passando o ID para o método Delete -->
-                                <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este fornecedor?');">
+                                <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este fornecedor?');" style="border:none !important;">
                                     <img src="~/Images/lixeira 1.svg" alt="Excluir" />
                                 </button>
                             }

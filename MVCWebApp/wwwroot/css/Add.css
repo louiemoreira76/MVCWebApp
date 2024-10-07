@@ -1,33 +1,67 @@
-﻿/* Estilos para a página de cadastro */
+﻿/* Sombras e transições */
+body {
+    background: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
 
 header h1 {
     color: #4CAF50;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .form {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 1200px;
+    margin: 20px auto;
+    transition: transform 0.3s ease;
 }
 
-    .form .part1, .form .part2 {
-        width: 48%;
+    .form:hover {
+        transform: scale(1.02);
     }
 
     .form label {
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
+        font-size: 14px;
     }
 
     .form input, .form select {
         width: 100%;
-        padding: 8px;
+        padding: 10px;
         margin-bottom: 15px;
         border: 1px solid #ccc;
         border-radius: 4px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .form input:focus, .form select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+        }
+
+    .form .part1, .form .part2 {
+        width: 48%;
     }
 
 .part2 {
@@ -38,7 +72,6 @@ header h1 {
     padding: 25px;
 }
 
-
 .img-renderizada {
     display: flex;
     justify-content: center;
@@ -47,14 +80,18 @@ header h1 {
     max-height: 100%;
     overflow: hidden;
     margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 2px dashed #4CAF50;
+    border-radius: 8px;
     height: 315px;
     width: 400px;
     box-sizing: border-box;
-    border: 2px dashed black;
     position: relative;
+    transition: border-color 0.3s ease;
 }
+
+    .img-renderizada:hover {
+        border-color: #45a049;
+    }
 
 #renderizar {
     object-fit: contain;
@@ -66,19 +103,21 @@ header h1 {
 article button {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
     article button:hover {
         background-color: #45a049;
-     
+        transform: scale(1.05);
     }
-    article{
-        height: 1085px;
-    }
+
+article {
+    height: auto;
+}

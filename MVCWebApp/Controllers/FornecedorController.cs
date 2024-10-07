@@ -137,6 +137,7 @@ namespace MVCWebApp.Web.Controllers
         [Route("Delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            logger.LogInformation($"ID recebido para exclusão: {id}");
             try
             {
                 if (id == Guid.Empty)

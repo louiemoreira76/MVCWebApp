@@ -16,7 +16,10 @@ else
 {
     <header>
         <h1><strong>Alterar Informações de Fornecedor</strong></h1>
-        <input type="text" asp-for="Id" readonly />
+        <div id="Edit" style="display: flex;flex-direction: row;width:100%;">
+            <div style="width:33%;"><h5 style="text-align:end;margin-right:10px;">ID:</h5></div>
+            <input type="text" asp-for="Id" readonly style="width:33%;" />
+         </div>
     </header>
 
     <form asp-controller="Fornecedor" asp-action="Edit" method="post" enctype="multipart/form-data">
